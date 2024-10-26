@@ -1,3 +1,3 @@
 # CNS
-Computer Networks and Security /r
+Computer Networks and Security \n
 Компјутерски мрежи и безбедност
