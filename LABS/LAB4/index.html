@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<style>
+    *{
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    code{
+        background-color: lightgray;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LAB-4</title>
+</head>
+<body>
+<h1>KMIB LAB-4 RESENIE</h1>
+<p style="font-weight: bold">Задачите ќе ги решавам со curl во cmd и wget во windows powershell!</p>
+<p>1. Земете ги сите студенти од API достапно на следниот линк:
+    http://185.153.49.149/lab/api/kmib/students користејќи ги wget и curl одделно.
+    Наведете информации за двете барања кои ги направивте и добиените одговори.
+    Исто така, анализирајте ги заглавјата на одговорите при двете направени барања –
+    може да ги користите curl -I и wget --server-response.</p>
+<h5>RESENIE 1.</h5>
+<p>CURL</p>
+<code>curl.exe -X GET http://185.153.49.149/lab/api/kmib/students -i -o students_curl.json
+</code>
+<br>
+<code>
+    curl.exe -I http://185.153.49.149/lab/api/kmib/students
+</code>
+<p>WGET</p>
+<code>Invoke-WebRequest -Uri "http://185.153.49.149/lab/api/kmib/students" -OutFile "students_wget.json" -Headers @{ "Authorization" = "YOUR_TOKEN" }
+</code>
+<p>Како да ја најдеш датотеката:
+    Во истата папка: Ако ја отвори Command Prompt во папката C:\Users\(ИМЕТО НА ДАТОТЕКАТА), тогаш датотеката ќе биде зачувана таму.
+
+    Отвори ја датотеката:
+
+    Користи File Explorer и оди во папката (на пример, C:\Users\(ИМЕТО НА ДАТОТЕКАТА)).
+    Најди ја датотеката filtered_students_curl.json
+    Најди ја датотеката students_wget.json
+</p>
+<hr>
+
+<p>2.Земете ги сите студенти каде префиксот на индексот е еднаков на првите две цифри
+    од вашиот индекс (пример: 21) од API достапно на следниот линк:
+    http://185.153.49.149/lab/api/kmib/students користејќи ги wget и curl одделно. Имајте
+    во предвид дека префиксот на индексот претставува API параметар кој можете да го
+    испратите како URL параметар. (пример:
+    http://185.153.49.149/lab/api/kmib/students/filter?indexPrefix=value). Наведете
+    информации за заглавјата на одговорот од wget и curl командите и анализирајте ги.</p>
+<h5>RESENIE 2.</h5>
+<p>CURL</p>
+<code>curl.exe -X GET "http://185.153.49.149/lab/api/kmib/students/filter?indexPrefix=21" -i -o filtered_students_curl.json
+</code>
+<p>-o filtered_students_curl.json: Ги зачувува податоците во датотека наречена filtered_students_curl.json.</p>
+
+<p>WGET</p>
+<code>Invoke-WebRequest -Uri "http://185.153.49.149/lab/api/kmib/students/filter?indexPrefix=value" -OutFile "filtered_students_wget.json" -Headers @{ "Authorization" = "YOUR_TOKEN" }
+</code>
+<p>-o filtered_students_curl.json: Ги зачувува податоците во датотека наречена filtered_students_wget.json</p>
+<hr>
+<p>3.Креирајте студент користејќи ги вашите лични податоци: корисничко_име, име,
+    презиме:
+    • username – Вашиот студентски индекс
+    • name – Вашето име
+    • surname – Вашето презиме
+    Креирајте го студентот користејќи JSON како data payload на барањето. Внимавајте
+    дека треба да се додаде специфично Content-type заглавје кое ја опишува
+    содржината како JSON. API е достапно на следниот линк:
+    http://185.153.49.149/lab/api/kmib/students/add. Наведете детални информации за
+    заглавјата на одговорот. Дали постои начин да се испрати барањето користејќи
+    Wget? Доколку е возможно, опишете го во детали; доколку не е возможно, наведете
+    детални информации зашто ова барање не може да се испрати користејќи wget.</p>
+<h5>RESENIE 3.</h5>
+<p>CURL</p>
+<code>curl.exe -X POST http://185.153.49.149/lab/api/kmib/students/add -H "Content-Type: application/json" -d "{\"username\": \"231008\", \"name\": \"Filip\", \"surname\": \"Iliev\"}" -i
+</code>
+<p>WGET</p>
+<p>Во PowerShell и командната линија на Windows, wget не поддржува испраќање JSON податоци со POST барање на ист начин како curl. <br>
+    wget е повеќе наменет за преземање датотеки и GET барања, и нема лесна поддршка за POST барања со JSON тело,
+    особено кога е потребно да се додава специфично заглавје Content-Type: application/json.</p>
+<p>Во заглавјата на одговорот, исто така, го гледаме Location заглавјето,
+    кое покажува линк до новокреираниот студент: http://185.153.49.149/lab/api/kmib/students/view/231008.</p>
+<hr>
+<p>4.Земете ги информациите за креираниот корисник од претходното прашање.
+    Информациите за конкретниот студент може да ги земете користејќи го следниот
+    линк: http://185.153.49.149/lab/api/kmib/students/view/studentIndex
+    Имајте во предвид дека studentIndex треба да биде заменето со индексот кој го
+    пребарувате. Студентскиот индекс претставува параметар за API барање. Извршете
+    го ова барање со curl и wget командите и наведете детален преглед на заглавјата на
+    одговорот. </p>
+<h5>RESENIE 4.</h5>
+<p style="font-weight: bold">VNIMAVAJ NA INDEKSOT VO KODOT NE E IST KAJ MENE I KAJ TEBE</p>
+<p>CURL</p>
+<code>curl.exe -X GET http://185.153.49.149/lab/api/kmib/students/view/231008 -i
+</code>
+<p>WGET</p>
+<code>Invoke-WebRequest -Uri "http://185.153.49.149/lab/api/kmib/students/view/231008" -OutFile "student_info.json" -Headers @{ "Authorization" = "YOUR_TOKEN" }
+</code>
+<p>Оваа команда ќе ги прикаже податоците за студентот со индекс 123456 и ќе ги прикаже заглавјата на одговорот во конзолата.</p>
+<hr>
+
+<p>5.За да продолжите со следното прашање, потребно е да се авторизирате на
+    системот. Тоа можете да го направите користејќи го следниот линк:
+    http://185.153.49.149/lab/api/kmib/login
+    Пример барањето изгледа вака:
+    curl -X POST http://185.153.49.149/lab/api/kmib/login \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "username=YOUR_USERNAME"
+    Корисничкото име кое треба да се испрати во наведеното барање треба да биде
+    студентскиот индекс со кој се креираше профил во прашање 3. Наведете
+    информации за одговорот кој го добивте и кое е значењето на добиениот резултат.
+    ОДГОВОРОТ ДОБИЕН ОД ОВА ПРАШАЊЕ ЗАЧУВАЈТЕ ГО ЛОКАЛНО БИДЕЈЌИ ЌЕ ГО
+    КОРИСТИТЕ ЗА АВТОРИЗАЦИЈА ВО СЛЕДНИТЕ ЧЕКОРИ!
+</p>
+<h5>RESENIE 5.</h5>
+<p>CURL</p>
+<code>curl.exe -X POST http://185.153.49.149/lab/api/kmib/login -H "Content-Type: application/x-www-form-urlencoded" -d "username=231008" -i
+</code>
+<p>WGET</p>
+<p>wget не поддржува директно POST барање со податочно тело во формат application/x-www-form-urlencoded, како што тоа го прави curl</p>
+<p>Одговорот што го доби покажува:
+    HTTP/1.1 200 OK: Означува дека авторизацијата е успешна.
+    Content-Type: application/json: Означува дека одговорот е во JSON формат.
+    Токен: Во JSON делот на одговорот, го гледаме полето "token": "ZYPYETBWXEd". Ова е токенот кој ќе го користиш за авторизација во следните чекори.
+    Што понатаму
+    Зачувај го токенот "ZYPYETBWXEd" бидејќи ќе ти биде потребен за сите наредни барања кои бараат авторизација.
+    Во наредните чекори, кога ќе треба да се користи токенот, ќе го додадеш во заглавјето на барањето.</p>
+<hr>
+<p>6.Земете детали за студентот користејќи го следниот линк:
+    http://185.153.49.149/lab/api/kmib/students/details/studentIndex
+    За да го извршите ова барање, потребно е да го испратите авторизацискиот токен
+    кој го добивте со претходното прашање. Извршете го барањето користејќи ги wget и
+    curl и наведете ги добиените резултати.</p>
+<h5>RESENIE 6.</h5>
+<p>CURL</p>
+<code>curl.exe -X GET http://185.153.49.149/lab/api/kmib/students/details/231008 -H "Authorization: ZYPYETBWXEd" -i
+</code>
+<p>WGET</p>
+<p>Во PowerShell и Command Prompt на Windows, wget нема поддршка за додавање на Authorization заглавје на лесен начин.
+    Затоа, најдобро е да користиш curl за ова барање. Еве како би изгледале командите со curl.</p>
+<code>Invoke-WebRequest -Uri "http://185.153.49.149/lab/api/kmib/students/details/231008" -OutFile "student_details.json" -Headers @{ "Authorization" = "ZYPYETBWXEd" }
+</code>
+<p>-H "Authorization: ZYPYETBWXEd":Го додава токенот за авторизација во заглавјето.</p>
+<p style="text-decoration: underline">Откако ќе ја извршиш командата, одговорот треба да изгледа слично на ова:</p>
+<code>HTTP/1.1 200 OK <br>
+    Content-Type: application/json <br>
+    Content-Length: 123 <br>
+    Date: Mon, 11 Nov 2024 23:30:00 GMT <br>
+
+    { <br>
+    "id": 228, <br>
+    "username": "231008", <br>
+    "name": "Filip", <br>
+    "surname": "Iliev", <br>
+    "groupName": null <br>
+    }
+</code>
+<hr>
+<p>7. Испратете PATCH барање до следниот линк:
+    http://185.153.49.149/lab/api/kmib/students/modify?labGroupName=grupa14
+    Користејќи го ова барање, може да го ажурирате вашето име на група користејќи го
+    параметарот labGroupName со испраќање на име како параметар на барањето. Со
+    цел да извршите таков тип на барање, потребно е да сте авторизирани. За
+    авторизација користете го токенот од прашање 5.</p>
+<h5>RESENIE 7.</h5>
+<p>CURL</p>
+<code>curl.exe -X PATCH "http://185.153.49.149/lab/api/kmib/students/modify?labGroupName=grupa14" -H "Authorization: YOUR_TOKEN" -i
+</code>
+<p>WGET</p>
+<p>Ако мораш да користиш wget за ова, тогаш нема да можеш да го испратиш како вистинско PATCH барање.
+    wget не поддржува PATCH метод, што значи дека нема директен начин за извршување на ова барање преку wget.</p>
+<p>-X PATCH: Означува дека користиме PATCH метод за ажурирање.
+    -H "Authorization: YOUR_TOKEN": Го додава токенот за авторизација.
+    -i: Вклучува ги заглавјата на одговорот.</p>
+<p style="text-decoration: underline">Откако ќе ја извршиш командата, одговорот треба да изгледа слично на ова:</p>
+
+<code>HTTP/1.1 200 OK <br>
+    Content-Type: application/json <br>
+    Content-Length: 123 <br>
+    Date: Mon, 11 Nov 2024 23:40:00 GMT <br>
+    <br>
+    { <br>
+    "message": "Group name successfully updated to grupa14" <br>
+    } <br>
+</code>
+ <hr>
+<p>8. Користејќи ги wget и curl командите, преземете го фајлот кој е достапен на следната
+    локација: http://185.153.49.149/lab/api/kmib/key/download
+    Наведете детални информации за заглавјата на одговорот кој го добивте. Која е
+    должината на содржината (content length) во заглавјето на одговорот? Инфо:
+    Авторизирајте се со цел да го извршите барањето користејќи го токенот добиен при
+    прашање 5.</p>
+<h5>RESENIE 8.</h5>
+<p>CURL</p>
+<code>curl.exe -X GET http://185.153.49.149/lab/api/kmib/key/download -H "Authorization: YOUR_TOKEN" -i -o downloaded_key_file
+</code>
+<br>
+<p>VO GORNIOT NEMA AUTHORIZATION TOKEN</p>
+<code>curl -X GET "http://185.153.49.149/lab/api/kmib/key/download" -H "Authorization: ZYPYETBWXEd" -o downloaded_key_file
+</code>
+<p>WGET</p>
+<code>wget --header="Authorization: YOUR_TOKEN" -O downloaded_key_file http://185.153.49.149/lab/api/kmib/key/download --server-response
+</code>
+<br>
+<p>VO GORNIOT NEMA AUTHORIZATION TOKEN</p>
+
+<code>
+wget --header="Authorization: ZYPYETBWXEd" -O downloaded_key_file http://185.153.49.149/lab/api/kmib/key/download --server-response
+</code>
+<p>-X GET: Означува дека правиме GET барање. <br>
+    -H "Authorization: YOUR_TOKEN": Го додава токенот за авторизација. <br>
+    -i: Вклучува ги заглавјата на одговорот. <br>
+    -o downloaded_key_file: Го зачувува преземениот фајл со име downloaded_key_file.</p>
+<p> Користи File Explorer и оди во папката (на пример, C:\Users\(ИМЕТО НА ДАТОТЕКАТА)). <br>
+    Најди ја датотеката downloaded_key_file</p>
+<hr>
+<p>9. Користејќи го curl, валидирајте го преземениот фајл. Потребно е да го прикачите
+    преземениот фајл на следниот линк: http://185.153.49.149/lab/api/kmib/key/verify.
+    Внимавајте дека Content-Type мора да биде поставено како multipart/form-data.
+    Инфо: Авторизирајте се со цел да го извршите барањето користејќи го токенот
+    добиен при прашање 5.</p>
+<h5>RESENIE 9.</h5>
+<p>CURL</p>
+<code>curl.exe -X POST http://185.153.49.149/lab/api/kmib/key/verify -H "Authorization: YOUR_TOKEN" -H "Content-Type: multipart/form-data" -F "document=@downloaded_key_file" -i
+</code>
+<p style="font-weight: bold">ILI zavisi od imeto na datotekata ako ne saka dodaj mu txt na fajlot</p>
+<code>curl.exe -X POST http://185.153.49.149/lab/api/kmib/key/verify -H "Authorization: YOUR_TOKEN" -H "Content-Type: multipart/form-data" -F "document=@downloaded_key_file.txt" -i
+</code>
+<p>WGET</p>
+<code>Invoke-RestMethod -Uri "http://185.153.49.149/lab/api/kmib/key/verify" -Method Post -Headers @{ "Authorization" = "ZYPYETBWXEd" } -ContentType "multipart/form-data" -InFile "downloaded_key_file.txt" -OutFile "verification_result.json"
+</code>
+<p>-X POST: Означува дека користиме POST метод. <br>
+    -H "Authorization: YOUR_TOKEN": Го додава токенот за авторизација во заглавјето. <br>
+    -H "Content-Type: multipart/form-data": Поставува тип на содржина како multipart/form-data, што е потребно за прикачување на фајлови. <br>
+    -F "document=@downloaded_key_file": Прикачува фајл со име downloaded_key_file (осигурај се дека ова е точната патека и име на фајлот). <br>
+    -i: Вклучува ги заглавјата на одговорот.</p>
+<p> Очекуван резултат</p>
+<code>
+    HTTP/1.1 200 OK <br>
+    Content-Type: application/json <br>
+    Content-Length: 123 <br>
+    Date: Mon, 11 Nov 2024 23:55:00 GMT <br>
+    <br>
+    { <br>
+    "message": "File validation successful" <br>
+    } <br>
+
+</code>
+</body>
+</html>
